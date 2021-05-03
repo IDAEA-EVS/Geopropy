@@ -37,7 +37,6 @@ def anglefinder(mainpolylist,prior,fault_table,predefined_angle_degree):
         upordown_dic={"up": 0,"down":0}
         upordown=None
         for pol in angles[i][5]:
-            #print "pol\n", pol
             tanalpha_temp, upordownpoly =anglecalculator(pol[2],pol[3])
             ang_temp_list.append(tanalpha_temp)
             upordown_dic[upordownpoly] = upordown_dic.get(upordownpoly)+1

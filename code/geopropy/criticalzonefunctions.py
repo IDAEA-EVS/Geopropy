@@ -113,19 +113,31 @@ def printandinputdata(priority,priority_type,box_points_list,zonepnts,maxpriorit
         print tabulate([box_points_list[i][2:5] for i in range(0,4)] ,headers=["X","Y","Z"], tablefmt='orgtbl')    
         print "#############################################"
         print "### RELATED FAULTS ###"
+        fault_point_for_plot=list()
         if len(all_faults)!=0:
+            
             for i in all_faults:
-
+                x_f=list()
+                y_f=list()
+                z_f=list()
                 print "fault prioroty:", i[0]
                 print "fault points:"
 
                 print tabulate([ [ j[2], j[5],j[0] ] for j in i[1] ],headers=["BOREHOLE_ID", "[X,Y,Z]", "POINT_ID"], tablefmt='orgtbl' )
+                for j in i[1]:
+                    x_f.append(j[5][0])
+                    y_f.append(j[5][1])
+                    z_f.append(j[5][2])
+                fault_point_for_plot.append([i[0],x_f,y_f,z_f])    
         else:
             print "No related fault detected"
         print "\n#############################################\n### ZONE INFORMATION ###\n"
         #print "BOREHOLE_ID, BOREHOLE_INDEX, [X,Y,Z], POLARITY, POINT_ID\n"
         points_temp=list()
         points_temptt=list()
+        points_temp_x=list()
+        points_temp_y=list()
+        points_temp_z=list()
         points_temp_id=['SEPARATE']
         for i in zonepnts:
             #print "zonepnts"
@@ -147,6 +159,9 @@ def printandinputdata(priority,priority_type,box_points_list,zonepnts,maxpriorit
             points_temp.append([i[7],id,i[0],[i[2],i[3],i[4]],i[1],i[6],i[5]])
             points_temptt.append([i[7],id,i[0],[i[2],i[3],i[4]],pol,pnt_sit,i[5]])
             points_temp_id.append(i[5])
+            points_temp_x.append(i[2])
+            points_temp_y.append(i[3])
+            points_temp_z.append(i[4])
         points_temp=sorted(points_temp,key=itemgetter(2))
         points_temptt=sorted(points_temptt,key=itemgetter(2))
         print tabulate(points_temptt,headers=["POINT_TYPE","BOREHOLE_ID", "BOREHOLE_INDEX", "[X,Y,Z]", "POLARITY"," POINT SIT.", "POINT_ID"], tablefmt='orgtbl')
@@ -164,7 +179,44 @@ def printandinputdata(priority,priority_type,box_points_list,zonepnts,maxpriorit
                 cnt=cnt+1
                 if cnt!=1:
                     print 'unacceptable input!!, please refer to the example shown in previous lines!, to quit, type quit()!'
+                #############################
+                #2021 matplotlib
+                from matplotlib import pyplot
+                from mpl_toolkits.mplot3d import Axes3D
+                from pylab import figure
+                import matplotlib.colors as colors
+                import numpy as np
+                fig = figure()
+                ax = Axes3D(fig)
+                points_temp_id_str=[str(n) for n in points_temp_id[1:]]
+
+                ax.scatter(points_temp_x,points_temp_y,points_temp_z,s=40,c=colors.rgb2hex(np.random.rand(3)))  
+
+                for i,j,k,nn in zip(points_temp_x,points_temp_y,points_temp_z,points_temp_id_str):
+                    ax.text(i,j,k,nn, size=10, zorder=1,  color='k' )
                 
+                #fault points
+                for fp in fault_point_for_plot:
+                    ax.scatter(fp[1],fp[2],fp[3],s=40,c=colors.rgb2hex(np.random.rand(3)),marker="*")
+                    for px,py,pz in zip(fp[1],fp[2],fp[3]):
+                        ax.text(px,py,pz,"Fault"+str(fp[0]), size=10, zorder=1,  color='red' )
+                ############
+                #color dict
+                col_dic=dict()
+                for bhp in mainpolylist:
+                    for i in bhp[2]:
+                        col_dic[i[0]]=col_dic.get(i[0],colors.rgb2hex(np.random.rand(3)))
+                ############
+                #plot lines:
+                for bhp in mainpolylist:
+                    for pp in bhp[2]:
+                        ax.plot([pp[3][0],pp[4][0]],[pp[3][1],pp[4][1]],[pp[3][2],pp[4][2]],c=col_dic[pp[0]])
+
+                ax.set_xlabel('X (EAST)')
+                ax.set_ylabel('Y (NORTH)')
+                ax.set_zlabel('Z')
+                pyplot.show()
+                #############################
                 point_id_list=input("Enter the POINT_ID list:")
                 if type(point_id_list) !=list:
                     if point_id_list=='jumptomanual': #jump from stage 2 to 3

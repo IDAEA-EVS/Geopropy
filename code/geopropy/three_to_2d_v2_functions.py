@@ -340,6 +340,53 @@ def points_2d_to_3d_transfer(polygons_2d_list,planenormalslist,epsbn_ratio,eps_r
                     #################################################
                     polygns_3d.append([lit,polygons_3d_point_list,polygontemp])
                     #polygns_3d=[[0:lit ,1:polygonpoints, 2: 3dpolygon],.....]
+    # 2021 matplotlib presentation:
+    import mpl_toolkits.mplot3d as a3
+    import matplotlib.pyplot as plt
+    import matplotlib.colors as colors
+    import numpy as np
+    #find xyz minmax
+    x_min=None
+    x_max=None
+    y_min=None
+    y_max=None
+    z_min=None
+    z_max=None
+    col_dic=dict()
+    for i in polygns_3d:
+        for p in i[1]:
+            if x_min==None: x_min=p[0]
+            elif p[0]<  x_min: x_min=  p[0]
+            if x_max==None: x_max=p[0]    
+            elif p[0]>  x_max: x_max=  p[0]
+
+            if y_min==None:y_min=p[1]
+            elif p[1]<  y_min: y_min=  p[1]
+            if y_max==None:y_max=p[1] 
+            elif p[1]>  y_max: y_max=  p[1]
+
+            if z_min==None:z_min=p[2]
+            elif p[2]<  z_min: z_min=  p[2]
+            if z_max==None:z_max=p[2]   
+            elif p[2]>  z_max: z_max=  p[2]
+        #color dict
+        col_dic[i[0]]=col_dic.get(i[0],colors.rgb2hex(np.random.rand(3)))
+
+    fig = plt.figure()
+    ax = a3.Axes3D(fig)
+    for i in polygns_3d:
+        polis=[tuple(n) for n in i[1]]
+        tri=a3.art3d.Poly3DCollection([polis])
+        tri.set_color(col_dic[i[0]])
+        tri.set_edgecolor('k')
+        ax.add_collection3d(tri)
+    ax.set_xlim3d(left=x_min,right=x_max)
+    ax.set_ylim3d(bottom=y_min, top=y_max)
+    ax.set_zlim3d(bottom=z_min, top=z_max)
+    ax.set_xlabel('X (EAST)')
+    ax.set_ylabel('Y (NORTH)')
+    ax.set_zlabel('Z')
+    plt.show()                
     return polygns_3d
 #polygns_3d=points_2d_to_3d_transfer(polygons_2d_list,planenormalslist,epsbn_ratio,eps_ratio)
 ##########################################################################################################################################################################

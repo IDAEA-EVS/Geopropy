@@ -25,6 +25,14 @@ License: agpl-3.0
 \
 Since geopropy uses arcpy, Be sure to install an ArcGIS version that runs python 2.7 (such as 10.5).\
 Download geopropy folder, place it directly with other libraries where you installed python, or add the folder directory to your Environment path.
+Installation can be done by cloning the repository.
+
+##############################
+
+
+***Jupyter Notebook:***\
+\
+To reproduce the synthetic databases, there are Jupyter notebooks that can be found in 'Examples' repository. In case of problem in semi-automatic stage visualization, execute the commands in terminal. 
 
 ##############################
 

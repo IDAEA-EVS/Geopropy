@@ -7,35 +7,25 @@ import copy
 def createpolyfeatureclass(mainpolylist,pfcadd,postbottomboxlist,minsfirst,minslast,maxfirst,maxlast,prior):
     #postbottomboxlist=[ [point1coord,point2coord,point 1 borehole or mid (0 or 1) ,point 2 borehole or mid (0 or 1), polyline] ,... ]
     allpolies_temp=list()
-    'filenames1'
     homeadd =joinadd(expanduser("~"),"arcgistemp")
-    #plnsadd=joinadd(homeadd,"plns")
     #################
     'making  priorpolylist [ priority number, [polyline1,polyline2,...] ]'
     for i in range(1,len(mainpolylist)-1):
         for j in mainpolylist[i][2]:
 
-            #polylinee=arcpy.Polyline(arcpy.Array([arcpy.Point(*coords) for coords in [ j[3] , j[4] ]]),"Unknown",True,False)
             allpolies_temp.append([j[0],j[3],j[4]])
             #allpolies=[prio_num,p1 coord,p2 coord]
     allpolies_temp.append(["firstbhline",maxfirst,minsfirst[1]])
 
     #pointlist=[maxfirst,minsfirst[1]]
-    #print "pointlist firstbhline:", pointlist
-    #firstbhline=arcpy.Polyline(arcpy.Array([arcpy.Point(*coords) for coords in pointlist]),"Unknown",True,False)
-    #allpolies_temp.append(["firstbhline",maxfirst,minsfirst[1]])
 
     #pointlist=[maxlast,minslast[1]]
-    #print "pointlist lastbhline:", pointlist
-    #lastbhline=arcpy.Polyline(arcpy.Array([arcpy.Point(*coords) for coords in pointlist]),"Unknown",True,False)
     allpolies_temp.append(["lastbhline",maxlast,minslast[1]])
 
 
 
     #######
     priorpolylist_temp=list()
-    #print 'allpolies is:', allpolies_temp
-
 
     for n in allpolies_temp:
         if [n[0],[]] not in priorpolylist_temp:
@@ -88,20 +78,14 @@ def createpolyfeatureclass(mainpolylist,pfcadd,postbottomboxlist,minsfirst,minsl
                 pnts[1][1]=pnts[1][1]+(float(pnts[1][2]-zhigh)/(zdown-zhigh))*0.01'''
             polylinee=arcpy.Polyline(arcpy.Array([arcpy.Point(*coords) for coords in [ pnts[0] , pnts[1] ]]),"Unknown",True,False)
             polss.append(polylinee)
-            #print "pnts[0] , pnts[1]:", pnts[0], pnts[1]
-            #print 'poly.fpo, poly.lp:', polylinee.firstPoint, polylinee.lastPoint
-
 
         if type(m[0])==float:
             m[0]=int(m[0])
         priorpolylist.append([m[0],polss])
 
-
-
     #########################################
     #########################################
     #########################################
-
 
     #print 'priorpolylist' , priorpolylist
 
@@ -116,8 +100,6 @@ def createpolyfeatureclass(mainpolylist,pfcadd,postbottomboxlist,minsfirst,minsl
     polylineadlistmerge=[]
     for ii in range(0,len(priorpolylist)):
         con=con+1
-
-        'names'
         temppolyname="temppoly"+str(con)
         #mypolyname=joinadd(homeadd,"mypoly")+str(con)
         #plnslayertempname=joinadd("in_memory","plnslayertemp"+str(con))+"_"+str(priorpolylist[ii][0])

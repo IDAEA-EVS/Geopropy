@@ -216,7 +216,6 @@ def foldfaulintrusionsitunationdeterminers(mainpointlist,mainpointlistreverse,ma
                 zones.append([newzone,[],[],None,None,None]) #to append the last newzone
         prios[3]=zones
     pointsbypriority=sorted(pointsbypriority,key=itemgetter(0),reverse=True)
-    #for tt in pointsbypriority: print tt    
     #############################################################################
     '''
     Now we know the critical prioroties, and critical points.

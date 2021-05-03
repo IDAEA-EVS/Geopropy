@@ -4,6 +4,7 @@ from math import sqrt
 #import intersectfun
 #import intersectionchecklinesegment
 from segmentlineintersection3d import segmentlineintersection3d
+
 def definitelines(prior,indextemplist_with_coords,mainpointlist,mainpolylist):
     ounter=0
     ounter2=0
