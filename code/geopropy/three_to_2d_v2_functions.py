@@ -292,7 +292,10 @@ def points_2d_to_3d_transfer(polygons_2d_list,planenormalslist,epsbn_ratio,eps_r
                         B=(float(2*a*ybh1)/b)-2*xbh1+(float(2*a*d)/math.pow(b,2))
                         C=math.pow(xbh1,2)+math.pow(ybh1,2)-math.pow(m,2)+math.pow(float(d)/b,2) + float(2*ybh1*d)/b
                         inside_sqrt=math.pow(B,2)-4*A*C
-                        if round(inside_sqrt,1)==-0.0:
+                        #if planenormalslist[plns][0]==3 and planenormalslist[plns][1]==4:
+                            #print "2dpolypoint", pont
+                            #print "[x,y (index1),x,y (index2)], 3:newcoord index1(x)", planenormalslist[plns][2],planenormalslist[plns][2]
+                        if round(inside_sqrt,1) in [-0.0,-0.1,-0.2]:
                             inside_sqrt=0
                         whole_sqrt=math.sqrt(inside_sqrt)
                         ###########

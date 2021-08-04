@@ -88,7 +88,6 @@ def postbottombox(mainpolylist,mainpointlist,indextemplist_with_coords,bottomlen
     #print 'minslist', minslist
     #########################
     #create the line
-
     for jj in range(0,len(minslist)-1):
         if minslist[jj][1] != minslist[jj+1][1]:
             if minslist[jj][3] != "bottombox": 

@@ -73,7 +73,7 @@ def main_function(database_dir,bore_IDs,Lithology_table,box_bottom_rate= 1.1,bot
 
     ''' drawing the Box '''
     #ratiobottombox or normalbottombox:
-    #normalbottombox find the minimum, and increase the box by a used defined ratio (consider faults)
+    #normalbottombox find the minimum, and increase the box by a user defined ratio (consider faults)
     #ratiobottombox do it based on minimum of every borehole (consider faults)
     mainpolylist,boxpoints,rawdata = boxcreator.boxcreator2(bottom_box_type,box_bottom_rate,fault_table, rawdata,prior,mainpolylist,indextemplist_with_coords)
     ''' drawing the topo'''
@@ -227,9 +227,9 @@ def cross_section(database_dir,bore_IDs,Lithology_table,box_bottom_rate= 1.1,bot
     ########################################################################################################################################
     """
     if developer_mode==True:
-        main_function(database_dir,bore_IDs,Lithology_table,box_bottom_rate= 1.1,bottomlength=15,predefined_angle_degree=None,Merge_Layers=False,bottom_box_type='normalbottombox',xshifter=0.5,yshifter=0.5,epsbn_ratio=0.05,eps_ratio=0.01,ExtendLine_edit_distance=5,TrimLine_edit_dangle_length=2,Integrate_management_distance=0.01,del_x=10,del_y=10,smooth_2d=False,gen_polygons=True)    
+        main_function(database_dir,bore_IDs,Lithology_table,box_bottom_rate,bottomlength,predefined_angle_degree,Merge_Layers,bottom_box_type,xshifter,yshifter,epsbn_ratio,eps_ratio,ExtendLine_edit_distance,TrimLine_edit_dangle_length,Integrate_management_distance,del_x,del_y,smooth_2d,gen_polygons)    
     elif developer_mode==False:
         try:
-            main_function(database_dir,bore_IDs,Lithology_table,box_bottom_rate= 1.1,bottomlength=15,predefined_angle_degree=None,Merge_Layers=False,bottom_box_type='normalbottombox',xshifter=0.5,yshifter=0.5,epsbn_ratio=0.05,eps_ratio=0.01,ExtendLine_edit_distance=5,TrimLine_edit_dangle_length=2,Integrate_management_distance=0.01,del_x=10,del_y=10,smooth_2d=False,gen_polygons=True)
+            main_function(database_dir,bore_IDs,Lithology_table,box_bottom_rate,bottomlength,predefined_angle_degree,Merge_Layers,bottom_box_type,xshifter,yshifter,epsbn_ratio,eps_ratio,ExtendLine_edit_distance,TrimLine_edit_dangle_length,Integrate_management_distance,del_x,del_y,smooth_2d,gen_polygons)
         except:
             print "Database, Input or internal error, for the details set 'developer_mode' to true "

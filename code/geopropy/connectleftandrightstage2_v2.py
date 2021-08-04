@@ -40,16 +40,18 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
         secondbh=poi[1]+1
     ########################################################
     #Here, the algorithm for line by preferred angle introduced by user in chronopriority table will be considered.
+    #print "priority num, preferred_angle 43",poi[3], preferred_angle, side
     if preferred_angle !=None: #this is the angle in access database
         tan_angle=math.tan(math.radians(preferred_angle))
 
         distbh,ybothside,xbothside=bh_dist(indextemplist_with_coords,firstbh,side,secondbh)
 
         zdif=abs(tan_angle * distbh)
+        #print "line 50"
         if (preferred_angle>0 and side=='right') or (preferred_angle<0 and side=='left'): #this pointlist is from the output of continuedLineCreator
-            znew=poi[5][2]-zdif
-        else:
             znew=poi[5][2]+zdif
+        else:
+            znew=poi[5][2]-zdif
         if poi[4] !="fault":
             pointlist22=pointlistmaker([  poi[5] , [xbothside,ybothside,znew] ])
             polytemp22=None
@@ -58,6 +60,7 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
             if side=='right':
                 alreadydonepoliestmep=list()
                 polytemp22, pointlist21, alreadydonepolies21 = continuedlinecreator.continuedLineCreator(poi[5][2],poi[1]-1,poi[1],poi[1]+1,poi[3],mainpolylist,side,poi[2],indextemplist_with_coords,alreadydonepoliestmep)
+                #print "pointlist21 62",pointlist21
                 if (pointlist21[1][2] <= pointlist21[0][2] and preferred_angle<0) or (pointlist21[1][2] >= pointlist21[0][2] and  preferred_angle>0):
                     pointlist22=pointlistmaker([poi[5],[xbothside,ybothside,znew]])
                     polytemp22=None
@@ -91,6 +94,7 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
                 pointlist=pointlist22
     ########################################################
     if conti_temp==False:
+        #print "line 97"
         if side=='right':
             polytemp, pointlist, alreadydonepolies = continuedlinecreator.continuedLineCreator(poi[5][2],poi[1]-1,poi[1],poi[1]+1,poi[3],mainpolylist,side,poi[2],indextemplist_with_coords,alreadydonepolies)
         elif side=='left':
@@ -122,10 +126,12 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
                 #################################################################################################################
                 else:
                     for vv in v[2]:
+                        #print vv[0], poi[3], vv[1]
                         if vv[0]> poi[3] or vv[1]=="bottombox": #polytemp.disjoint(vv[2])==False:
                             inters=segmentlineintersection3d(pointlist,[vv[3],vv[4]])
                             if  inters!= False:
                                 conti_temp=True
+    #print "line 133,conti_temp continuedlinecreator",conti_temp
     if conti_temp==False: #intersection with the next bh
         #angle
         #angles= [ [0:prio_num, 1:type, 2:tan_angle, 3:quantity, 4:from left (up or down) ,5:[ [index1,index2,startpoint,endpoint] ]   ] ,...]
@@ -158,12 +164,14 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
                             if vv[0]>poi[3] or vv[1]=="bottombox":
                                 inters=segmentlineintersection3d(pointlist22,[vv[3],vv[4]])
                                 if  inters!= False:
+                                    #print "line 166 angle"
                                     inters_temp=True
             if inters_temp==True:
                 polytemp=polytemp22
                 pointlist=pointlist22
         ########################################################################
         if (tan_angle ==None or inters_temp==False) and poi[4] !="fault": #no information or without valid intersection - try parallel line
+            #print "line172 parallel"
             tan_angle=math.tan(math.radians(0.01))
             #elevation difference (zdif)
             zdif=tan_angle * distbh
@@ -189,6 +197,7 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
                 pointlist=pointlist22
         ########################################################################
         if tan_angle ==None or inters_temp==False: #if no information or without valid intersection
+            #print "line 198 go to middle" 
             ########################################################################
             #finding the next bh Lithology
             if side=='right':
@@ -212,6 +221,7 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
                     litTop=rawdatainpointbh[kk][4]
             ##########################################################################
             if poi[4]=='fault':
+                #print "line 217 fault"
                 for i in mainpolylist:
                     if i[0]==bh1temp and i[1]==bh2temp:
                         templineslist1=list()
@@ -257,11 +267,14 @@ def sidesstage2(preferred_angle,poi,mainpolylist,alreadydonepolies,rawdata,angle
                             pointlist=pointlistmaker([poi[5],Midpoint1])
                             polytemp=None'''
                 #NEW ALG FOR FAULTS:
+                #print "pointlist 263",pointlist
+                #print "Midpoint1264",Midpoint1
                 if pointlist[1][2]-pointlist[0][2]<=0: p1p0="pos"
                 else: p1p0="neg"
                 if Midpoint1[2]-poi[5][2]>=0: poim1="pos"
                 else: poim1="neg"
                 ######
+                #print "p1p0,poim1,Midpoint2",p1p0,poim1,Midpoint2
                 if p1p0==poim1:
                     pointlist=pointlistmaker([poi[5],Midpoint1])
                     polytemp=None
@@ -381,14 +394,15 @@ def connecbothsides(preferred_angle, poi, mainpolylist,alreadydonepolies,rawdata
             if tan_angle != None and upordown != None:
                 #elevation difference (zdif)
                 zdif=tan_angle * distbh
-                '''if upordown=="down" and side=="right" or upordown=="up" and side=="left" : #this pointlist is from the output of continuedLineCreator
+                if (upordown=="down" and side=="right") or (upordown=="up" and side=="left") : #this pointlist is from the output of continuedLineCreator
+                    znew=poi[5][2]+zdif
+                elif (upordown=="up" and side=="right") or (upordown=="down" and side=="left"):
                     znew=poi[5][2]-zdif
-                elif upordown=="up" and side=="right" or upordown=="down" and side=="left":
-                    znew=poi[5][2]+zdif'''
-                if upordown=="down":
+                #print "line 394 side up or down,tan_angle",side,upordown,tan_angle
+                '''if upordown=="down":
                     znew=poi[5][2]-zdif
                 elif upordown=="up":
-                    znew=poi[5][2]+zdif
+                    znew=poi[5][2]+zdif'''
                 pointlist22=pointlistmaker([  poi[5] , [xbothside,ybothside,znew] ])
                 polytemp22=None
                 #check for intersection with higher priority line or bottom box
@@ -409,6 +423,7 @@ def connecbothsides(preferred_angle, poi, mainpolylist,alreadydonepolies,rawdata
             if tan_angle ==None or inters_temp==False or upordown == None: #if no information or without valid intersection- try parallel
                 tan_angle=math.tan(math.radians(0.01))
                 upordown="up"
+                #print "here 419"
                 #elevation difference (zdif)
                 zdif=tan_angle * distbh
                 if side=='right':
@@ -433,6 +448,7 @@ def connecbothsides(preferred_angle, poi, mainpolylist,alreadydonepolies,rawdata
                     pointlist=pointlist22
             #############################################################################
             if tan_angle ==None or inters_temp==False or upordown == None: #if no information or without valid intersection
+                #print "line 446"
                 #parallel line to identify the lithology in the other BH
                 for n in indextemplist_with_coords:
                     if (side=='right' and n[1]==poi[1]+1) or (side=='left' and n[1]==poi[1]-1):
