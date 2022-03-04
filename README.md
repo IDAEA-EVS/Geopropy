@@ -22,6 +22,15 @@ License: agpl-3.0
 
 ##############################
 
+***Citation:***\
+\
+If geopropy contributes to a project that leads to a scientific publication, please acknowledge this fact by citing
+
+Hassanzadeh, A., Vázquez-Suñé, E., Corbella, M., Criollo, R., 2022. An automatic geological 3D cross-section generator: Geopropy, an open-source library. Environ. Model. Softw. 149, 105309. https://doi.org/10.1016/j.envsoft.2022.105309
+
+##############################
+
+
 ***Installation:***\
 \
 Since geopropy uses arcpy, Be sure to install an ArcGIS version that runs python 2.7 (such as 10.5).\
