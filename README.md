@@ -1,6 +1,7 @@
 ***geopropy***
 
-This repository contains Automatic 3D Geological Cross Section Generation
+This repository contains Automatic 3D Geological Cross Section Generation.
+For more info, refer to this [article](https://doi.org/10.1016/j.envsoft.2022.105309)
 
 ##############################
 
