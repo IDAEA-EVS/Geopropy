@@ -1,9 +1,7 @@
 # ***geopropy Python Library***
 
 This [repository](https://github.com/IDAEA-EVS/Geopropy) contains Automatic 3D Geological Cross Section Generation.
-
-For more info, refer to this [article](https://doi.org/10.1016/j.envsoft.2022.105309).
-
+For more info, refer to this [article](https://doi.org/10.1016/j.envsoft.2022.105309)..
 
 ---
 
@@ -54,6 +52,31 @@ year = {2022}
 Since geopropy uses arcpy, Be sure to install an ArcGIS version that runs python 2.7 (such as 10.5).
 
 Download [geopropy folder](https://github.com/IDAEA-EVS/Geopropy), place it directly with other libraries where you installed python, or add the folder directory to the Environment path.
+
+***Citation:***\
+\
+If geopropy contributes to a project that leads to a scientific publication, please acknowledge this fact by citing:
+
+Hassanzadeh, A., Vázquez-Suñé, E., Corbella, M., Criollo, R., 2022. An automatic geological 3D cross-section generator: Geopropy, an open-source library. Environ. Model. Softw. 149, 105309. https://doi.org/10.1016/j.envsoft.2022.105309
+
+```
+@article{Hassanzadeh2022,
+author = {Hassanzadeh, Ashkan and V{\'{a}}zquez-Su{\~{n}}{\'{e}}, Enric and Corbella, Merc{\`{e}} and Criollo, Rotman},
+doi = {10.1016/j.envsoft.2022.105309},
+issn = {13648152},
+journal = {Environmental Modelling and Software},
+month = {mar},
+pages = {105309},
+publisher = {Elsevier},
+title = {{An automatic geological 3D cross-section generator: Geopropy, an open-source library}},
+url = {https://linkinghub.elsevier.com/retrieve/pii/S1364815222000159},
+volume = {149},
+year = {2022}
+}
+```
+
+##############################
+
 
 Installation also can be done by cloning the repository.
 
